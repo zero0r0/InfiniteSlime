@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartPosY: 9.3
-  EndPosY: -9.3
+  EndPosY: -9.4
   speed: 5
   stageManager: {fileID: 0}
 --- !u!212 &212000012380658686

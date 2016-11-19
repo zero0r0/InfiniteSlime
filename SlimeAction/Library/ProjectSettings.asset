@@ -6,12 +6,12 @@ PlayerSettings:
   serializedVersion: 8
   productGUID: e262eadbd7d974045844e47ee24a4803
   AndroidProfiler: 0
-  defaultScreenOrientation: 4
+  defaultScreenOrientation: 1
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
-  productName: SlimeAction
+  companyName: PandD
+  productName: InfiniteSlime
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenStyle: 0
@@ -94,7 +94,7 @@ PlayerSettings:
     16:10: 0
     16:9: 0
     Others: 0
-  bundleIdentifier: com.Company.ProductName
+  bundleIdentifier: com.PandD.InfiniteSlime
   bundleVersion: 1.0
   preloadedAssets: []
   metroEnableIndependentInputSource: 0

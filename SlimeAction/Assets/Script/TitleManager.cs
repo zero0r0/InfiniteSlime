@@ -5,6 +5,7 @@ using System.Collections;
 
 public class TitleManager : MonoBehaviour {
 
+#if UNITY_STANDALONE_WIN
     private int nowSelect = 0;
 
     private const int START = 0;
@@ -14,12 +15,13 @@ public class TitleManager : MonoBehaviour {
     private const int SHOW = 3;
     private const int NONE = 4;
 
-
     [SerializeField]
     private GameObject selectObj;
-
     [SerializeField]
     private Transform[] selectPos;
+
+    private int nowPage = 0;
+#endif
 
     [SerializeField]
     private Image fadeImage;
@@ -28,7 +30,8 @@ public class TitleManager : MonoBehaviour {
     private Image howPlayImage;
     [SerializeField]
     private Sprite[] howPlaySprite;
-    private int nowPage = 0;
+    private int nowDescriptionPage;
+    private bool description;
 
     [SerializeField]
     private AudioClip selectSe;
@@ -37,21 +40,53 @@ public class TitleManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+#if UNITY_STANDALONE_WIN
         nowSelect = START;
+#endif
+        description = false;
+        nowDescriptionPage = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+#if UNITY_ANDROID
+        AndroidPlayUpdate();
+#elif UNITY_STANDALONE_WIN
+        PcPlayUpdate();
+#endif
+    }
+
+    void AndroidPlayUpdate()
+    {
+        if (description && Input.GetMouseButtonDown(0))
+        {
+            if (nowDescriptionPage < howPlaySprite.Length - 1)
+            {
+                nowDescriptionPage++;
+                SoundManager.instance.SoundSystemSE(dicideSe);
+                howPlayImage.sprite = howPlaySprite[nowDescriptionPage];
+            }
+            else
+            {
+                nowDescriptionPage = 0;
+                description = false;
+                howPlayImage.gameObject.SetActive(false);
+            }
+        }
+    }
+
+#if UNITY_STANDALONE_WIN 
+    void PcPlayUpdate()
+    {
         switch (nowSelect)
         {
             case START:
                 SelectMenu();
-                if (Input.GetKeyDown(KeyCode.Space))              
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    SoundManager.instance.SoundSystemSE(dicideSe);
                     GameStart();
                 }
-
+                Debug.Log("スタートボタン");
                 break;
             case EXIT:
                 SelectMenu();
@@ -59,6 +94,7 @@ public class TitleManager : MonoBehaviour {
                 {
                     Application.Quit();
                 }
+                Debug.Log("やめるボタン");
                 break;
             case HOWPLAY:
                 SelectMenu();
@@ -69,34 +105,12 @@ public class TitleManager : MonoBehaviour {
                     howPlayImage.sprite = howPlaySprite[0];
                     nowSelect = SHOW;
                 }
+                Debug.Log("遊び方ぼたん");
                 break;
             case SHOW:
                 ShowHowToPlay();
+                Debug.Log("遊び方見せてる");
                 break;
-        }
-
-	}
-
-    void ShowHowToPlay()
-    {
-        if (Input.GetKeyDown(KeyCode.RightArrow) && nowPage < howPlaySprite.Length - 1)
-        {
-            SoundManager.instance.SoundSystemSE(dicideSe);
-            nowPage++;
-            howPlayImage.sprite = howPlaySprite[nowPage];
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) && 0 < nowPage)
-        {
-            SoundManager.instance.SoundSystemSE(dicideSe);
-            nowPage--;
-            howPlayImage.sprite = howPlaySprite[nowPage];
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) && nowPage == howPlaySprite.Length - 1)
-        {
-            SoundManager.instance.SoundSystemSE(dicideSe);
-            nowPage = 0;
-            howPlayImage.gameObject.SetActive(false);
-            nowSelect = HOWPLAY;
         }
     }
 
@@ -121,11 +135,49 @@ public class TitleManager : MonoBehaviour {
             SoundManager.instance.SoundSystemSE(selectSe);
         }
     }
+#endif
 
-    void GameStart()
+    public void GameStart()
     {
+        SoundManager.instance.SoundSystemSE(dicideSe);
         fadeImage.gameObject.SetActive(true);
         iTween.ValueTo(gameObject, iTween.Hash("from", 0, "to", 1, "time", 1f, "onupdate", "UpdateHandler"));
+    }
+
+
+    public void ShowHowToPlay()
+    {
+#if UNITY_STANDALONE_WIN
+        if (Input.GetKeyDown(KeyCode.RightArrow) && nowPage < howPlaySprite.Length - 1)
+        {
+            SoundManager.instance.SoundSystemSE(dicideSe);
+            nowPage++;
+            howPlayImage.sprite = howPlaySprite[nowPage];
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) && 0 < nowPage)
+        {
+            SoundManager.instance.SoundSystemSE(dicideSe);
+            nowPage--;
+            howPlayImage.sprite = howPlaySprite[nowPage];
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow) && nowPage == howPlaySprite.Length - 1)
+        {
+            SoundManager.instance.SoundSystemSE(dicideSe);
+            nowPage = 0;
+            howPlayImage.gameObject.SetActive(false);
+            nowSelect = HOWPLAY;
+        }
+#elif UNITY_ANDROID
+        description = true;
+        SoundManager.instance.SoundSystemSE(dicideSe);
+        howPlayImage.gameObject.SetActive(true);
+        howPlayImage.sprite = howPlaySprite[0];        
+#endif
+    }
+
+    public void EndGame()
+    {
+        Application.Quit();
     }
 
     void UpdateHandler(float value)
@@ -134,6 +186,7 @@ public class TitleManager : MonoBehaviour {
         if (value >= 1)
         {
             SceneManager.LoadScene(1);
+            Debug.Log("ロード");
         }
     }
 
