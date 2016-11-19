@@ -16,8 +16,6 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField]
     private GameObject gameStart;
-    [SerializeField]
-    private GameObject gameover;
 
     [SerializeField]
     private Player player;
@@ -53,7 +51,6 @@ public class GameManager : MonoBehaviour {
 	void Start () {
         nowState = GameState.READY;
         gameStart.SetActive(true);
-        gameover.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -111,7 +108,6 @@ public class GameManager : MonoBehaviour {
     {
         SystemSetBool(false);
         nowState = GameState.GAMEOVER;
-        gameover.SetActive(true);
         SoundManager.instance.IsPlaying = false;
         SoundManager.instance.StopBGM();
         SoundManager.instance.SoundSystemSE(gameOverBGM);

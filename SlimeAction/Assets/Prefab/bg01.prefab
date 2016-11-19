@@ -52,8 +52,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce95cf07b0e13e4cb4b3881de0a2bd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartPosY: 25
-  EndPosY: -15
+  StartPosY: 9.3
+  EndPosY: -9.3
   speed: 5
   stageManager: {fileID: 0}
 --- !u!212 &212000012380658686
