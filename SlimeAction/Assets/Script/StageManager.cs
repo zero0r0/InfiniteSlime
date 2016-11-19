@@ -169,8 +169,8 @@ public class StageManager : MonoBehaviour {
 
     private void SetSpawnList()
     {
-        int x = (int)((lastSpawnPos.x - startSpawnPos.x) / offset.x);
-        int y = (int)((lastSpawnPos.y - startSpawnPos.y) / offset.y);
+        int x = Mathf.Abs((int)((lastSpawnPos.x - startSpawnPos.x) / offset.x));
+        int y = Mathf.Abs((int)((lastSpawnPos.y - startSpawnPos.y) / offset.y));
         objSpawPos = new Vector2[x, y];
         
         for (int i = 0; i < y; i++)
