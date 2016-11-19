@@ -36,11 +36,9 @@ public class Background : MonoBehaviour {
     void ScrollEnd()
     {
         transform.Translate(0,-1 * (EndPosY - StartPosY),0);
-        int n = 0;
         foreach (Transform child in transform)
         {
             GameObject.Destroy(child.gameObject);
-            n++;
         }
         //Debug.Log(n);
         stageManager.SpawnObj(this.transform);
