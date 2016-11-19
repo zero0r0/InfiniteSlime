@@ -133,7 +133,11 @@ public class Player : MonoBehaviour {
 
     void Move()
     {
+#if UNITY_STANDALONE_WIN
         float x = Input.GetAxis("Horizontal");
+#elif UNITY_ANDROID
+        float x = Input.acceleration.x;
+#endif
         Vector3 playerPos = this.transform.position;
 
         this.transform.position += CalculateMovePosition(playerPos.x, x) * Time.deltaTime;
