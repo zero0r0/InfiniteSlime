@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - DamageObj
+  - Obstacle
+  - Brave
+  - Mind
+  - Glue
+  - Buru
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Background
+    uniqueID: 1758679839
+    locked: 0
+  - name: Ground
+    uniqueID: 502463737
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Item
+    uniqueID: 2904598249
+    locked: 0
+  - name: Player
+    uniqueID: 2218496495
+    locked: 0
+  - name: Enemy
+    uniqueID: 1949431239
+    locked: 0
+  - name: Effect
+    uniqueID: 1044769959
+    locked: 0

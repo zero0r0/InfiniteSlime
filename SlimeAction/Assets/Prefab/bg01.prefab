@@ -22,7 +22,7 @@ GameObject:
   - 212: {fileID: 212000012380658686}
   - 114: {fileID: 114000012839231830}
   m_Layer: 0
-  m_Name: Background
+  m_Name: bg01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
