@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour {
 
     private bool isMoveScene = false;
 
+    private bool isHumanized = false;
+
     [SerializeField]
     private float particleTime = 1f;
    
@@ -64,7 +66,7 @@ public class GameManager : MonoBehaviour {
                 break;
 
             case GameState.PLAY:
-                if (player.Mind >= 100 && Input.GetKeyDown(KeyCode.Space))
+                if (player.Mind >= 100 && (Input.GetKeyDown(KeyCode.Space) || isHumanized))
                 {
                     GameClear();
                 }
@@ -150,6 +152,11 @@ public class GameManager : MonoBehaviour {
         background[1].enabled = isPlay;
         stageManager.IsPlaying = isPlay;
         UIManager.instance.IsPlaying = isPlay;
+    }
+
+    public void SetHumanized(bool setHumanized)
+    {
+        isHumanized = setHumanized;
     }
 
 }
