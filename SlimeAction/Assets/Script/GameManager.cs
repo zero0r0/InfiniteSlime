@@ -74,14 +74,14 @@ public class GameManager : MonoBehaviour {
                 break;
             
             case GameState.GAMEOVER:
-                if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetMouseButtonDown(0) || (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)))
                 {
                     SceneManager.LoadScene(0);
                 }
                     
                 break;
             case GameState.GAMECLEAR:
-                if (isMoveScene && Input.GetKeyDown(KeyCode.Space))
+                if (isMoveScene && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)))
                 {
                     SceneManager.LoadScene(0);
                 }
