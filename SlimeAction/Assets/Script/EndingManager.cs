@@ -40,6 +40,7 @@ public class EndingManager : MonoBehaviour {
 
     /// <summary>
     /// エンディングの判定
+    /// 死亡フラグやHP、ココロノカケラの数でどの画像を表示するか判定
     /// </summary>
     /// <param name="isDead">死んでるかどうか</param>
     /// <param name="mindNum">ココロノカケラ数</param>
