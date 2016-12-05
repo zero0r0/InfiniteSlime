@@ -43,6 +43,7 @@ public class TitleManager : MonoBehaviour {
 #if UNITY_STANDALONE_WIN
         nowSelect = START;
 #endif
+        iTween.ValueTo(gameObject, iTween.Hash("from", 1, "to", 0, "time", 1f, "onupdate", "FadeInUpdateHandler"));
         description = false;
         nowDescriptionPage = 0;
 	}
@@ -56,6 +57,10 @@ public class TitleManager : MonoBehaviour {
 #endif
     }
 
+    /// <summary>
+    /// アンドロイド用のアップデート
+    /// メニューはボタンで管理するので説明のみ実装
+    /// </summary>
     void AndroidPlayUpdate()
     {
         if (description && Input.GetMouseButtonDown(0))
@@ -74,8 +79,12 @@ public class TitleManager : MonoBehaviour {
             }
         }
     }
-
 #if UNITY_STANDALONE_WIN 
+
+    /// <summary>
+    /// PC用のアップデート
+    /// メニューの選択など
+    /// </summary>   
     void PcPlayUpdate()
     {
         switch (nowSelect)
@@ -137,14 +146,6 @@ public class TitleManager : MonoBehaviour {
     }
 #endif
 
-    public void GameStart()
-    {
-        SoundManager.instance.SoundSystemSE(dicideSe);
-        fadeImage.gameObject.SetActive(true);
-        iTween.ValueTo(gameObject, iTween.Hash("from", 0, "to", 1, "time", 1f, "onupdate", "UpdateHandler"));
-    }
-
-
     public void ShowHowToPlay()
     {
 #if UNITY_STANDALONE_WIN
@@ -180,13 +181,29 @@ public class TitleManager : MonoBehaviour {
         Application.Quit();
     }
 
-    void UpdateHandler(float value)
+
+    public void GameStart()
+    {
+        SoundManager.instance.SoundSystemSE(dicideSe);
+        fadeImage.gameObject.SetActive(true);
+        iTween.ValueTo(gameObject, iTween.Hash("from", 0, "to", 1, "time", 1f, "onupdate", "FadeOutUpdateHandler"));
+    }
+
+    void FadeOutUpdateHandler(float value)
     {
         fadeImage.color = new Color(1f,1f,1f,value);
         if (value >= 1)
         {
             SceneManager.LoadScene(1);
             Debug.Log("ロード");
+        }
+    }
+    void FadeInUpdateHandler(float value)
+    {
+        fadeImage.color = new Color(1f, 1f, 1f, value);
+        if (value <= 0) 
+        {
+            fadeImage.gameObject.SetActive(false);
         }
     }
 

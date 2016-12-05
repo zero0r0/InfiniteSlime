@@ -102,7 +102,10 @@ public class StageManager : MonoBehaviour {
         timer = 0;
         Debug.Log(wave);
     }
-
+    /// <summary>
+    /// 背景を暗くする関数（まだ未実装）
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator DarkenBackground()
     {
         Color backgroundColor = background[0].color;
@@ -131,7 +134,10 @@ public class StageManager : MonoBehaviour {
             yield return null;
         }
     }
-
+    /// <summary>
+    /// 障害物やアイテムを発生させて、背景と親子関係を持たせる関数
+    /// </summary>
+    /// <param name="background"></param>
     public void SpawnObj(Transform background)
     {
         int x = 0;
@@ -156,7 +162,11 @@ public class StageManager : MonoBehaviour {
         }
     }
 
-   
+    /// <summary>
+    /// 指定したオブジェクトをランダムなポジションへ出す関数
+    /// </summary>
+    /// <param name="spawnGameObject"></param>
+    /// <param name="background"></param>
     private void RandomSpawnObj(GameObject spawnGameObject, Transform background)
     {
         int x = Random.Range(0, objSpawPos.GetLength(0));
@@ -166,7 +176,10 @@ public class StageManager : MonoBehaviour {
     }
 
 
-
+    /// <summary>
+    /// インスペクターで設定した範囲、幅のマスを設定し
+    /// それをオブジェクトが現れるポジションとして保存する関数
+    /// </summary>
     private void SetSpawnList()
     {
         int x = Mathf.Abs((int)((lastSpawnPos.x - startSpawnPos.x) / offset.x));
