@@ -140,10 +140,16 @@ public class GameManager : MonoBehaviour {
         player.evolution.Stop();
         EndingManager.instance.JudgeEnding(false, player.Mind);
         UIManager.instance.SetResult();
+        player.gameObject.SetActive(false);
         yield return StartCoroutine(EndingManager.instance.FlashImage(Color.white,1,0));        
         isMoveScene = true;
     }
 
+    /// <summary>
+    /// メインゲームプレイ中でない場合（ゲームオーバーやクリアなどで）又はその逆
+    /// 各オブジェクトの動作を止めたりスタートさせたりする関数
+    /// </summary>
+    /// <param name="isPlay"></param>
     private void SystemSetBool(bool isPlay)
     {
         player.enabled = isPlay;

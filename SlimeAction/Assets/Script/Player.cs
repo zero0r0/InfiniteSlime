@@ -32,6 +32,7 @@ public class Player : MonoBehaviour {
 
     [SerializeField]
     private float playerBackY;
+    private bool goFront;
 
     [SerializeField]
     private int maxHp;
@@ -56,6 +57,7 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private float invinceblePoisonTime = 1f;
     */
+
     [SerializeField]
     private float invincibleTime = 1f;
     private bool invincible = false;
@@ -96,6 +98,7 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private float rendererInterval = 0.1f;
 
+
 	// Use this for initialization
 	void Start () {
         mind = 0;
@@ -103,6 +106,7 @@ public class Player : MonoBehaviour {
         isDead = false;
         invincible = false;
         isWing = false;
+        goFront = false;
         UIManager.instance.SetHPUI(hp);
         walkAudioSource.Play();
     }
@@ -112,7 +116,7 @@ public class Player : MonoBehaviour {
         if (!isDead)
         {
             Move();
-            ChangeSmall();
+            GoFront();
             if (invincible)
             {
                 Blink();
@@ -120,7 +124,9 @@ public class Player : MonoBehaviour {
         }
 	}
 
-
+    /// <summary>
+    /// ダメージ時の点滅関数
+    /// </summary>
     void Blink()
     {
         invincibleTimer += Time.deltaTime;
@@ -130,13 +136,29 @@ public class Player : MonoBehaviour {
             invincibleTimer = 0;
         }
     }
-
+    /// <summary>
+    /// 横移動関数
+    /// ポジション移動とアニメーション、音
+    /// </summary>
     void Move()
     {
+        float x = 0;
 #if UNITY_STANDALONE_WIN
-        float x = Input.GetAxis("Horizontal");
+        x = Input.GetAxis("Horizontal");
 #elif UNITY_ANDROID
-        float x = Input.acceleration.x;
+        Vector3 tapWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (Input.GetMouseButton(0) && tapWorldPos.x > 0)
+        {
+            x = 1f;
+        }
+        else if(Input.GetMouseButton(0) && tapWorldPos.x < 0)
+        {
+            x = -1f;
+        }
+        else
+        {
+            x = 0;
+        }
 #endif
         Vector3 playerPos = this.transform.position;
 
@@ -189,16 +211,20 @@ public class Player : MonoBehaviour {
             return new Vector3(x * wideSpeed, 0, 0);
         }
     }
-
-    void ChangeSmall()
+    /// <summary>
+    /// HPを削って前にでる関数
+    /// スケールも小さくし、スピードもUP
+    /// </summary>
+    void GoFront()
     {
-        if (1 < hp && Input.GetKeyDown(KeyCode.UpArrow))
+        if (1 < hp && (Input.GetKeyDown(KeyCode.UpArrow) || goFront))
         {
             this.transform.position -= new Vector3(0,playerBackY,0);
             this.transform.localScale -= new Vector3(addScale.x, addScale.y,0);
             wideSpeed += addWideSpeed;
             hp--;
             UIManager.instance.SetHPUI(hp);
+            goFront = false;
         }
     }
 
@@ -301,6 +327,12 @@ public class Player : MonoBehaviour {
     {
         invincible = false;
         spRenderer.enabled = true;
+    }
+
+    public void ClickGoFrontButton()
+    {
+        if (!goFront)
+            goFront = true;
     }
 
 
