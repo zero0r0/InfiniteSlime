@@ -523,6 +523,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e73557db2efa2a14e907534bb04fe2b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectObj: {fileID: 0}
+  selectPos: []
   fadeImage: {fileID: 175786879}
   howPlayImage: {fileID: 551471087}
   howPlaySprite:
@@ -829,8 +831,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   se_source: {fileID: 1034687729}
   bgm_source: {fileID: 1034687728}
-  mainIntroBGM: {fileID: 8300000, guid: 1c2ef24f2843edd4fbcb69d5449317c6, type: 3}
-  mainBGM: {fileID: 8300000, guid: ce390ad0752d35f41a7474b407f9216b, type: 3}
+  mainIntroBGM: {fileID: 8300000, guid: 52a7d3e6cc6c91940b19998c4c17cb65, type: 3}
+  mainBGM: {fileID: 8300000, guid: 03bd78c35e662ad4987f65fe5f6bbed3, type: 3}
 --- !u!4 &1034687731
 Transform:
   m_ObjectHideFlags: 0

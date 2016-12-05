@@ -98,6 +98,11 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private float rendererInterval = 0.1f;
 
+    [SerializeField]
+    private float tapWide = 0.1f;
+
+    [SerializeField]
+    private float tapDistance = 0.4f;
 
 	// Use this for initialization
 	void Start () {
@@ -146,19 +151,41 @@ public class Player : MonoBehaviour {
 #if UNITY_STANDALONE_WIN
         x = Input.GetAxis("Horizontal");
 #elif UNITY_ANDROID
-        Vector3 tapWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if (Input.GetMouseButton(0) && tapWorldPos.x > 0)
+
+        Vector3 tapStartPos = new Vector3(0, 0, 0);
+        Vector3 tapNowPos = new Vector3(0, 0, 0);
+        float distacePosX;
+
+        if (Input.GetMouseButtonDown(0))
         {
-            x = 1f;
+            tapStartPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
-        else if(Input.GetMouseButton(0) && tapWorldPos.x < 0)
+        else if (Input.GetMouseButton(0))
         {
-            x = -1f;
+            tapNowPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            distacePosX = tapNowPos.x - tapStartPos.x;
+            if (tapWide < distacePosX)
+            {
+                x = 1;
+                if (tapDistance < distacePosX)
+                {
+                    tapStartPos = tapNowPos;
+                }
+            }
+            else if (tapNowPos.x - tapStartPos.x < -tapWide)
+            {
+                x = -1;
+                if (tapDistance > -distacePosX)
+                {
+                    tapStartPos = tapNowPos;
+                }
+            }
+            else
+            {
+                x = 0;
+            }
         }
-        else
-        {
-            x = 0;
-        }
+
 #endif
         Vector3 playerPos = this.transform.position;
 

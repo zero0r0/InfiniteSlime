@@ -122,7 +122,7 @@ public class GameManager : MonoBehaviour {
         stageManager.IsPlaying = false;
         UIManager.instance.SaveHighScore();
         nowState = GameState.GAMECLEAR;
-        StartCoroutine("ProductionGameClear");
+        StartCoroutine(ProductionGameClear());
         SoundManager.instance.IsPlaying = false;
         SoundManager.instance.StopBGM();
 
