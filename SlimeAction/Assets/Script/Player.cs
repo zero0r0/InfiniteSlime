@@ -151,9 +151,9 @@ public class Player : MonoBehaviour {
     /// </summary>
     void Move()
     {
-#if UNITY_STANDALONE_WIN
-        x = Input.GetAxis("Horizontal");
-#elif UNITY_ANDROID
+//#if UNITY_STANDALONE_WIN
+//        x = Input.GetAxis("Horizontal");
+//#elif UNITY_ANDROID
 
         Vector3 playerPos = this.transform.position;
         if (Input.GetMouseButtonDown(0))
@@ -184,7 +184,7 @@ public class Player : MonoBehaviour {
             }
         }
 
-#endif
+//#endif
 
         //this.transform.position += CalculateMovePosition(playerPos.x, x) * Time.deltaTime;
         
