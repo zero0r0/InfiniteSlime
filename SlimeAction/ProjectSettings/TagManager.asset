@@ -10,6 +10,8 @@ TagManager:
   - Mind
   - Glue
   - Buru
+  - DeadObj
+  - House
   layers:
   - Default
   - TransparentFX
@@ -49,6 +51,9 @@ TagManager:
     locked: 0
   - name: Ground
     uniqueID: 502463737
+    locked: 0
+  - name: Witch
+    uniqueID: 2809839975
     locked: 0
   - name: Default
     uniqueID: 0

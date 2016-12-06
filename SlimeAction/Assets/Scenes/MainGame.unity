@@ -71,7 +71,8 @@ LightmapSettings:
     m_FinalGatherFiltering: 1
     m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000001, guid: 832d11e603074334e98c12ec8fa80795,
+    type: 2}
   m_RuntimeCPUUsage: 25
 --- !u!196 &4
 NavMeshSettings:
@@ -461,11 +462,11 @@ MonoBehaviour:
   addMind: 20
   maxPosX: 2.5
   minPosX: -2.5
-  playerBackY: -1
+  playerBackY: -0.5
   maxHp: 3
   hp: 2
   invincibleTime: 1
-  isWingTime: 2
+  isWingTime: 4
   walkAudioSource: {fileID: 213648156}
   effectAudioSource: {fileID: 213648155}
   damageSe: {fileID: 8300000, guid: 3601b924d4a90584c8b0ea8560bbbcca, type: 3}
@@ -479,6 +480,7 @@ MonoBehaviour:
   evolution: {fileID: 1407903467}
   spRenderer: {fileID: 1403957798}
   rendererInterval: 0.1
+  width: 0.1
 --- !u!4 &213648152
 Transform:
   m_ObjectHideFlags: 0
@@ -486,7 +488,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 213648150}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2, z: 0}
+  m_LocalPosition: {x: 0, y: -2.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -3767,12 +3769,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxWave: 4
   wavePoint: 
-  offset: {x: 1, y: 1}
+  offset: {x: 1.2, y: 1.2}
   startSpawnPos: {x: -2.5, y: 4}
   lastSpawnPos: {x: 2.5, y: -4}
   obstacle:
   - {fileID: 1000011739164142, guid: af111a22661e44c46b7dbcccaae08c62, type: 2}
+  - {fileID: 1000010651911318, guid: fb525c8f51eb34e42b4947b8a20813d8, type: 2}
+  - {fileID: 1000014267362354, guid: 6655d421a1629e44bb39d179a4e20ec3, type: 2}
   - {fileID: 1000010680518740, guid: 8eeba5aa59125a94f8b8d101a5ae46ff, type: 2}
+  - {fileID: 1000013331528148, guid: 4050675cef9063146931ab9d6b3b248b, type: 2}
+  - {fileID: 1000014207169594, guid: 64de76eb1a0f6b448a549519596a2870, type: 2}
   item:
   - {fileID: 1000010344690450, guid: 9a60c0907c82a804e80942993232d502, type: 2}
   - {fileID: 1000010668557788, guid: 018b630dc7342bc42b5c5e78f47fdf46, type: 2}
@@ -3782,17 +3788,17 @@ MonoBehaviour:
   background:
   - {fileID: 339236580}
   - {fileID: 1710504992}
-  colorChangeSpeed: 2
+  colorChangeSpeed: 0.25
+  darkTime: 5
   backgroundSprites:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 3ab3d2d2288507b4b94947bf19a6fd74, type: 3}
+  - {fileID: 21300000, guid: e9c6468db9e65a84792c82cfd2de9dc0, type: 3}
+  - {fileID: 21300000, guid: a2ac79bc03007d743b161115b8e5ac22, type: 3}
   poisonGround:
   - {fileID: 1000012339201750, guid: 268c079aa8310e747a217e2b59df120f, type: 2}
   - {fileID: 1000013734074290, guid: 465d575a60f87a94ba39a0da9f25f19a, type: 2}
   - {fileID: 1000013999247534, guid: 06ab9b1e9eb4efe4091aaa9746dedcec, type: 2}
+  maxObstacleNum: 2
 --- !u!1 &1403957796
 GameObject:
   m_ObjectHideFlags: 0
@@ -3997,7 +4003,7 @@ ParticleSystem:
   moveWithTransform: 1
   autoRandomSeed: 1
   scalingMode: 1
-  randomSeed: -1897000458
+  randomSeed: -1313300748
   InitialModule:
     serializedVersion: 2
     enabled: 1

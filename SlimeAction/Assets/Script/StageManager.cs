@@ -68,11 +68,16 @@ public class StageManager : MonoBehaviour {
 
     [SerializeField]
     private float colorChangeSpeed = 2;
+    [SerializeField]
+    private float darkTime;
 
     [SerializeField]
     private Sprite[] backgroundSprites;
     [SerializeField]
     private GameObject[] poisonGround;
+
+    [SerializeField]
+    private int maxObstacleNum;
 
 	// Use this for initialization
 	void Start () {
@@ -81,6 +86,7 @@ public class StageManager : MonoBehaviour {
         timer = 0;
         isPlaying = false;
         //SpawnObj();
+        Debug.Log(background[0].color);
 	}
 
     void Update()
@@ -97,10 +103,11 @@ public class StageManager : MonoBehaviour {
 
     void WaveUp()
     {
-        wave++;
-        //StartCoroutine("DarkenBackground");
+        StartCoroutine(DarkenBackground());
+        maxObstacleNum += 2;
         timer = 0;
-        Debug.Log(wave);
+        wave++;
+        //Debug.Log(wave);
     }
     /// <summary>
     /// 背景を暗くする関数（まだ未実装）
@@ -116,14 +123,17 @@ public class StageManager : MonoBehaviour {
             {
                 background[i].color = backgroundColor;
             }
+            //Debug.Log("暗くしてるよ");
             yield return null;
         }
 
+        yield return new WaitForSeconds(darkTime);
+
         for (int i = 0; i < background.Length; i++)
         {
-            background[i].sprite = backgroundSprites[wave+1];
+            background[i].sprite = backgroundSprites[wave-1];
         }
-
+        //Debug.Log("チェンジ！");
         while (backgroundColor.a < 1)
         {
             backgroundColor += new Color(1, 1, 1, 1) * colorChangeSpeed * Time.deltaTime;
@@ -131,6 +141,7 @@ public class StageManager : MonoBehaviour {
             {
                 background[i].color = backgroundColor;
             }
+            //Debug.Log("明るく");
             yield return null;
         }
     }
@@ -141,9 +152,9 @@ public class StageManager : MonoBehaviour {
     public void SpawnObj(Transform background)
     {
         int x = 0;
-        for(int i = 0; i < objSpawPos.GetLength(1); i += (maxWave+1) - wave){
+        for(int i = 0; i < objSpawPos.GetLength(1); i += (maxWave+2) - wave){
             x = Random.Range(0, objSpawPos.GetLength(0));
-            int randObj = Random.Range(0, obstacle.Length);
+            int randObj = Random.Range(0, maxObstacleNum);
             var gameObj = Instantiate(obstacle[randObj], objSpawPos[x, i], Quaternion.identity) as GameObject;
             gameObj.transform.parent = background;
         }
@@ -158,7 +169,7 @@ public class StageManager : MonoBehaviour {
         int randPoison = Random.Range(0,3);
         if (randPoison == 0)
         {
-            RandomSpawnObj(poisonGround[Random.Range(0,poisonGround.Length)],background);
+            RandomSpawnObj(poisonGround[Random.Range(0,poisonGround.Length)], background);
         }
     }
 
@@ -193,6 +204,8 @@ public class StageManager : MonoBehaviour {
                 objSpawPos[j,i] = startSpawnPos + new Vector2(j * offset.x, i * offset.y);
             }
         }
+        Debug.Log(objSpawPos.GetLength(0));
+        Debug.Log(objSpawPos.GetLength(1));
     }
 
 }

@@ -99,10 +99,13 @@ public class Player : MonoBehaviour {
     private float rendererInterval = 0.1f;
 
     [SerializeField]
-    private float tapWide = 0.1f;
+    private float width = 0.1f;
 
-    [SerializeField]
-    private float tapDistance = 0.4f;
+    //タップしたｘの座標
+    private float tapPosX;
+    float tapDistance;
+    private bool isMoving;
+    private float moveDirection;
 
 	// Use this for initialization
 	void Start () {
@@ -112,6 +115,7 @@ public class Player : MonoBehaviour {
         invincible = false;
         isWing = false;
         goFront = false;
+        isMoving = false;
         UIManager.instance.SetHPUI(hp);
         walkAudioSource.Play();
     }
@@ -147,51 +151,44 @@ public class Player : MonoBehaviour {
     /// </summary>
     void Move()
     {
-        float x = 0;
 #if UNITY_STANDALONE_WIN
         x = Input.GetAxis("Horizontal");
 #elif UNITY_ANDROID
 
-        Vector3 tapStartPos = new Vector3(0, 0, 0);
-        Vector3 tapNowPos = new Vector3(0, 0, 0);
-        float distacePosX;
-
+        Vector3 playerPos = this.transform.position;
         if (Input.GetMouseButtonDown(0))
         {
-            tapStartPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            //プレイヤーとタップの距離
+            tapPosX = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
+            tapDistance = tapPosX - playerPos.x;
+            //Debug.Log(tapDistance);
+            if (tapDistance > width)
+            {
+                moveDirection = 1f;
+            }
+            else if (tapDistance < width)
+            {
+                moveDirection = -1f;
+            }
+            isMoving = true;
         }
-        else if (Input.GetMouseButton(0))
+
+        if (isMoving)
         {
-            tapNowPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            distacePosX = tapNowPos.x - tapStartPos.x;
-            if (tapWide < distacePosX)
+            tapDistance = tapPosX - playerPos.x;
+            this.transform.position += CalculateMovePosition(playerPos.x, moveDirection) * Time.deltaTime;                 
+            if (Mathf.Abs(tapPosX - playerPos.x) < width)
             {
-                x = 1;
-                if (tapDistance < distacePosX)
-                {
-                    tapStartPos = tapNowPos;
-                }
-            }
-            else if (tapNowPos.x - tapStartPos.x < -tapWide)
-            {
-                x = -1;
-                if (tapDistance > -distacePosX)
-                {
-                    tapStartPos = tapNowPos;
-                }
-            }
-            else
-            {
-                x = 0;
+                isMoving = false;
+                moveDirection = 0;
             }
         }
 
 #endif
-        Vector3 playerPos = this.transform.position;
 
-        this.transform.position += CalculateMovePosition(playerPos.x, x) * Time.deltaTime;
+        //this.transform.position += CalculateMovePosition(playerPos.x, x) * Time.deltaTime;
         
-        if (x > 0)
+        if (moveDirection > 0)
         {
             anim.SetBool("Right", true);
             anim.SetBool("Left",false);
@@ -201,7 +198,7 @@ public class Player : MonoBehaviour {
             }
 
         }
-        else if (x < 0)
+        else if (moveDirection < 0)
         {
             anim.SetBool("Left", true);
             anim.SetBool("Right",false);
@@ -238,6 +235,7 @@ public class Player : MonoBehaviour {
             return new Vector3(x * wideSpeed, 0, 0);
         }
     }
+
     /// <summary>
     /// HPを削って前にでる関数
     /// スケールも小さくし、スピードもUP
@@ -301,13 +299,11 @@ public class Player : MonoBehaviour {
                 break;
       
             case "Obstacle":
-                if (!invincible){
-                    effectAudioSource.clip = destroySe;
-                    effectAudioSource.Play();
-                    this.transform.position += new Vector3(0, playerBackY, 0);
-                    Invinceble();       
-                    //InvincibleObstacle();
-                }
+                OnTriggerObstacle();
+                break;
+
+            case "House":
+                OnTriggerObstacle();
                 break;
             
             case "Buru":
@@ -323,6 +319,11 @@ public class Player : MonoBehaviour {
                 gameManager.GameOver();
                 break;
 
+            case "DeadObj":
+                isDead = true;
+                gameManager.GameOver();
+                break;
+
             default:
                 break;
         }
@@ -332,16 +333,29 @@ public class Player : MonoBehaviour {
         }
     }
 
+    void OnTriggerObstacle()
+    {
+        if (!invincible)
+        {
+            effectAudioSource.clip = destroySe;
+            effectAudioSource.Play();
+            this.transform.position += new Vector3(0, playerBackY, 0);
+            Invinceble();
+            //InvincibleObstacle();
+        }
+    }
 
     void Wing()
     {
         isWing = true;
+        anim.SetBool("Wing",isWing);
         Invoke("ReleasedWing", isWingTime);       
     }
 
     void ReleasedWing()
     {
         isWing = false;
+        anim.SetBool("Wing", isWing);        
     }
 
     void Invinceble()
