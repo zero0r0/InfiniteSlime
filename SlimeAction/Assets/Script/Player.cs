@@ -156,7 +156,7 @@ public class Player : MonoBehaviour {
 #elif UNITY_ANDROID
 
         Vector3 playerPos = this.transform.position;
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             //プレイヤーとタップの距離
             tapPosX = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
@@ -166,23 +166,32 @@ public class Player : MonoBehaviour {
             {
                 moveDirection = 1f;
             }
-            else if (tapDistance < width)
+            else if (tapDistance < -width)
             {
                 moveDirection = -1f;
             }
-            isMoving = true;
+            else
+            {
+                moveDirection = 0;
+            }
+            this.transform.position += CalculateMovePosition(playerPos.x, moveDirection) * Time.deltaTime;
+            Debug.Log(tapDistance);
         }
-
+        else
+        {
+            moveDirection = 0;
+        }
+        /*
         if (isMoving)
         {
             tapDistance = tapPosX - playerPos.x;
             this.transform.position += CalculateMovePosition(playerPos.x, moveDirection) * Time.deltaTime;                 
-            if (Mathf.Abs(tapPosX - playerPos.x) < width)
+            if (Mathf.Abs(tapPosX - playerPos.x) <= width)
             {
                 isMoving = false;
                 moveDirection = 0;
             }
-        }
+        }*/
 
 #endif
 
