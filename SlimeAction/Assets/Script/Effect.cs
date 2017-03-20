@@ -3,9 +3,11 @@ using System.Collections;
 
 public class Effect : MonoBehaviour {
 
-    public void DestroyEffect()
-    {
+    /// <summary>
+    /// アニメーションイベントからの呼び出し
+    /// </summary>
+    public void DestroyEffect() {
         Destroy(this.gameObject);
     }
-	
+
 }

@@ -29,8 +29,7 @@ public class EndingManager : MonoBehaviour {
 
     public static EndingManager instance = null;
 
-    void Awake()
-    {
+    void Awake() {
         if (instance == null)
             instance = this;
         else if (instance != this)
@@ -44,34 +43,27 @@ public class EndingManager : MonoBehaviour {
     /// </summary>
     /// <param name="isDead">死んでるかどうか</param>
     /// <param name="mindNum">ココロノカケラ数</param>
-    public void JudgeEnding(bool isDead , int mindNum , int hp = 1) {
+    public void JudgeEnding(bool isDead, int mindNum, int hp = 1) {
 
         Sprite endingSprite = null;
 
-        if (isDead)
-        {
-            foreach (Transform child in endingGroup.transform)
-            {
+        if (isDead) {
+            foreach (Transform child in endingGroup.transform) {
                 child.gameObject.SetActive(false);
             }
             //endingSprite = badEndingSprite;
-            if (hp == 0)
-            {
+            if (hp == 0) {
                 endingGroup.GetComponent<Image>().color = Color.white;
                 endingGroup.GetComponent<Image>().sprite = badEndingSprite[1];
             }
-            else
-            {
+            else {
                 endingGroup.GetComponent<Image>().color = Color.white;
                 endingGroup.GetComponent<Image>().sprite = badEndingSprite[0];
             }
         }
-        else
-        {
-            for (int i = 0; i < endingMindPoint.Length; i++)
-            {
-                if (endingMindPoint[i] <= mindNum/* && mindNum < endingMindPoint[i + 1]*/)
-                {
+        else {
+            for (int i = 0; i < endingMindPoint.Length; i++) {
+                if (endingMindPoint[i] <= mindNum/* && mindNum < endingMindPoint[i + 1]*/) {
                     endingSprite = clearEndingSprite[i];
                 }
             }
@@ -97,7 +89,7 @@ public class EndingManager : MonoBehaviour {
   */
 
 
-  
+
     /// <summary>
     /// フラッシュ（ゲームクリア、オーバー時のフェイドインフェイドアウト）
     /// </summary>
@@ -106,16 +98,14 @@ public class EndingManager : MonoBehaviour {
     /// <param name="endAlpha"></param>
     /// <param name="sigh"></param>
     /// <returns></returns>
-    public IEnumerator FlashImage(Color color,float startAlpha, float endAlpha)
-    {
+    public IEnumerator FlashImage(Color color, float startAlpha, float endAlpha) {
         flashImage.gameObject.SetActive(true);
         float timer = 0;
         Color startColor = color;
         Color endColor = color;
         startColor.a = startAlpha;
         endColor.a = endAlpha;
-        while (timer < 1)
-        {
+        while (timer < 1) {
             timer += alphaSpeed * Time.deltaTime;
             flashImage.color = Color.Lerp(startColor, endColor, timer);
             yield return null;

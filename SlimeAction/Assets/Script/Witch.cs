@@ -14,40 +14,34 @@ public class Witch : MonoBehaviour {
     private float speed = 1.5f;
     private float direction;
 
-    enum State
-    {
-        NONE,MOVE, MAGIC
+    enum State {
+        NONE, MOVE, MAGIC
     }
     State state;
 
-    void Start()
-    {
+    void Start() {
         state = State.NONE;
-        if (house.transform.position.x >= 0)
-        {
+        if (house.transform.position.x >= 0) {
             direction = -1f;
         }
-        else
-        {
+        else {
             direction = 1f;
         }
     }
 
-    void OnBecameVisible()
-    {
+    void OnBecameVisible() {
         state = State.MOVE;
     }
 
-	// Update is called once per frame
-	void Update () {
-        switch (state){
+    // Update is called once per frame
+    void Update() {
+        switch (state) {
             case State.NONE:
 
                 break;
             case State.MOVE:
-                this.transform.position += new Vector3(1f,0,0) * speed * direction * Time.deltaTime;
-                if (Vector3.Distance(house.transform.position + new Vector3(direction,0,0),this.transform.position) <= 0.1f)
-                {
+                this.transform.position += new Vector3(1f, 0, 0) * speed * direction * Time.deltaTime;
+                if (Vector3.Distance(house.transform.position + new Vector3(direction, 0, 0), this.transform.position) <= 0.1f) {
                     state = State.MAGIC;
                 }
                 break;
@@ -58,13 +52,11 @@ public class Witch : MonoBehaviour {
                     state = State.NONE;
                 break;
         }
-	}
+    }
 
-    void OnTriggerEnter2D(Collider2D col)
-    {
-        if (col.tag != "Player" && col.tag != "House" && col.tag != "Brave")
-        {
-            Instantiate(effect,col.gameObject.transform.position, Quaternion.identity);
+    void OnTriggerEnter2D(Collider2D col) {
+        if (col.tag != "Player" && col.tag != "House" && col.tag != "Brave") {
+            Instantiate(effect, col.gameObject.transform.position, Quaternion.identity);
             Destroy(col.gameObject);
         }
     }

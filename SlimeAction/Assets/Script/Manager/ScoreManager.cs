@@ -10,8 +10,7 @@ public class ScoreManager : MonoBehaviour {
 
     public static ScoreManager instance = null;
 
-    void Awake()
-    {
+    void Awake() {
         if (instance == null)
             instance = this;
         else if (instance != this)
@@ -19,16 +18,15 @@ public class ScoreManager : MonoBehaviour {
 
     }
 
-	public void SaveScore (int score) {
+    public void SaveScore(int score) {
         int highScore = LoadScore();
-        if (highScore < score)
-        {
+        if (highScore < score) {
             PlayerPrefs.SetInt(HIGH_SCORE_KEY, score);
         }
-	}
-	
-	// Update is called once per frame
-	public int LoadScore () {
+    }
+
+    // Update is called once per frame
+    public int LoadScore() {
         return PlayerPrefs.GetInt(HIGH_SCORE_KEY, 0);
-	}
+    }
 }
