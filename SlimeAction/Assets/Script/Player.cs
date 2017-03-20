@@ -104,7 +104,7 @@ public class Player : MonoBehaviour {
     //タップしたｘの座標
     private float tapPosX;
     float tapDistance;
-    private bool isMoving;
+    //private bool isMoving;
     private float moveDirection;
 
 	// Use this for initialization
@@ -115,7 +115,7 @@ public class Player : MonoBehaviour {
         invincible = false;
         isWing = false;
         goFront = false;
-        isMoving = false;
+        //isMoving = false;
         UIManager.instance.SetHPUI(hp);
         walkAudioSource.Play();
     }
@@ -175,7 +175,7 @@ public class Player : MonoBehaviour {
                 moveDirection = 0;
             }
             this.transform.position += CalculateMovePosition(playerPos.x, moveDirection) * Time.deltaTime;
-            Debug.Log(tapDistance);
+            //Debug.Log(tapDistance);
         }
         else
         {
@@ -262,23 +262,22 @@ public class Player : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter2D(Collider2D col)
-    {
+    void OnTriggerEnter2D(Collider2D col){
         switch (col.tag) {
             case "Mind":
                 effectAudioSource.clip = mindSe;
                 effectAudioSource.Play();
                 mind += addMind;
-                if (1000 <= mind)
-                {
+                if(100 <= mind) {
+                    UIManager.instance.HumanButton.interactable = true;
+                }else if (1000 <= mind){
                     mind = 999;
                 }
                 UIManager.instance.SetMindUI(mind);
                 break;
 
             case "DamageObj":
-                if (!invincible && !isWing)
-                {
+                if (!invincible && !isWing){
                     //InvinciblePoison();
                     Invinceble();
                     effectAudioSource.clip = poisonSe;

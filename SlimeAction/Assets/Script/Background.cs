@@ -9,14 +9,6 @@ public class Background : MonoBehaviour {
     private float EndPosY;
     [SerializeField]
     private float speed;
-
-    [SerializeField]
-    private StageManager stageManager;
-
-	// Use this for initialization
-	void Start () {
-        	    
-	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -40,8 +32,9 @@ public class Background : MonoBehaviour {
         {
             GameObject.Destroy(child.gameObject);
         }
+        StageManager.instance.InstantiateObj(this.transform);
         //Debug.Log(n);
-        stageManager.SpawnObj(this.transform);
+        //stageManager.SpawnObj(this.transform);
         //SendMessage("OnScrollEnd", SendMessageOptions.DontRequireReceiver);
     }
 }

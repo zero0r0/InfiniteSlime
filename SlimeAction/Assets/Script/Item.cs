@@ -7,8 +7,8 @@ public class Item : MonoBehaviour {
     {
         if (col.tag == "Obstacle")
         {
-            Destroy(col.gameObject);
-            Debug.Log("obstacle");
+            Destroy(this.gameObject);
+            //Debug.Log("obstacle");
         }
         
     }

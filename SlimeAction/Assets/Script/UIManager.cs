@@ -5,12 +5,12 @@ using System.Collections;
 
 public class UIManager : MonoBehaviour {
 
+    public static UIManager instance = null;
+
     [SerializeField]
     private Image[] distanceImage;
-
     [SerializeField]
     private Image[] scoreImage;
-
     [SerializeField]
     private Image[] mindPercentImage;
 
@@ -19,7 +19,6 @@ public class UIManager : MonoBehaviour {
 
     [SerializeField]
     private Image hpImage;
-
     [SerializeField]
     private Image hpResult;
     [SerializeField]
@@ -27,8 +26,8 @@ public class UIManager : MonoBehaviour {
     [SerializeField]
     private Image[] distanceResult;
 
-
-    public static UIManager instance = null;
+    public Button HumanButton;
+    public Button FrontButton;
 
     public int testScore;
 
@@ -49,7 +48,6 @@ public class UIManager : MonoBehaviour {
 
     [SerializeField]
     private float speed = 1f;
-
 
     void Awake()
     {

@@ -1,57 +1,34 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// ステージのWaveなどの全体を管理
+/// </summary>
 public class StageManager : MonoBehaviour {
 
+    public static StageManager instance = null;
+
+    //private Vector2[,] objSpawPos;
+
+    //ステージ関連
+    [SerializeField]
+    private Stage[] stage;
     private int wave;
-    public int Wave
-    {
-        set
-        {
-            if(wave < maxWave)
-                wave = value;
-        }
-        get
-        {
+    public int Wave {
+        get {
             return wave;
         }
+        set {
+            if (wave < maxWave)
+                wave = value;
+        }
     }
-
-
     [SerializeField]
     private int maxWave;
 
-    [SerializeField]
-    private int[] wavePoint;
-
-    private Vector2[,] objSpawPos;
-
-    [SerializeField]
-    private Vector2 offset;
-    [SerializeField]
-    private Vector2 startSpawnPos;
-    [SerializeField]
-    private Vector2 lastSpawnPos;
-
-    [SerializeField]
-    private GameObject[] obstacle;
-    [SerializeField]
-    private GameObject[] item;
-    [SerializeField]
-    private GameObject mind;
 
     [SerializeField]
     private Player player;
-
-    [SerializeField]
-    private float speed = 1f;
-
-    private float timer = 0;
-    [SerializeField]
-    private const float INTERVAL = 15f;
-
-    [SerializeField]
-    private SpriteRenderer[] background;
 
     private bool isPlaying;
     public bool IsPlaying
@@ -66,51 +43,52 @@ public class StageManager : MonoBehaviour {
         }
     }
 
+    //背景関連
+    [SerializeField]
+    private SpriteRenderer[] background;
     [SerializeField]
     private float colorChangeSpeed = 2;
     [SerializeField]
     private float darkTime;
-
     [SerializeField]
     private Sprite[] backgroundSprites;
-    [SerializeField]
-    private GameObject[] poisonGround;
 
-    [SerializeField]
-    private int maxObstacleNum;
+    void Awake() {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
+    }
 
-	// Use this for initialization
-	void Start () {
-        wave = 1;
-        SetSpawnList();
-        timer = 0;
+
+    // Use this for initialization
+    void Start () {
+        wave = 0;
+        //SetSpawnList();
         isPlaying = false;
         //SpawnObj();
-        Debug.Log(background[0].color);
+       // Debug.Log(background[0].color);
 	}
 
     void Update()
     {
         if (isPlaying)
         {
-            timer += speed * Time.deltaTime;
-            if (wave < maxWave && timer >= INTERVAL * wave)
-            {
-                WaveUp();
-            }
+            stage[wave].UpdateStage();
         }
     }
 
-    void WaveUp()
+    public void WaveUp()
     {
-        StartCoroutine(DarkenBackground());
-        maxObstacleNum += 2;
-        timer = 0;
-        wave++;
+        if (wave < maxWave) {
+            Wave++;
+            StartCoroutine(DarkenBackground());
+        }
         //Debug.Log(wave);
     }
+
     /// <summary>
-    /// 背景を暗くする関数（まだ未実装）
+    /// 背景を暗くした後スプライトを変えて明るくする関数
     /// </summary>
     /// <returns></returns>
     private IEnumerator DarkenBackground()
@@ -145,53 +123,16 @@ public class StageManager : MonoBehaviour {
             yield return null;
         }
     }
-    /// <summary>
-    /// 障害物やアイテムを発生させて、背景と親子関係を持たせる関数
-    /// </summary>
-    /// <param name="background"></param>
-    public void SpawnObj(Transform background)
-    {
-        int x = 0;
-        for(int i = 0; i < objSpawPos.GetLength(1); i += (maxWave+2) - wave){
-            x = Random.Range(0, objSpawPos.GetLength(0));
-            int randObj = Random.Range(0, maxObstacleNum);
-            var gameObj = Instantiate(obstacle[randObj], objSpawPos[x, i], Quaternion.identity) as GameObject;
-            gameObj.transform.parent = background;
-        }
-        RandomSpawnObj(mind, background);
 
-        int randItem = Random.Range(0, 2);
-        if (randItem == 0)
-        {
-            RandomSpawnObj(item[Random.Range(0, item.Length)], background);
-        }
-
-        int randPoison = Random.Range(0,3);
-        if (randPoison == 0)
-        {
-            RandomSpawnObj(poisonGround[Random.Range(0,poisonGround.Length)], background);
-        }
+    public void InstantiateObj(Transform parent) {
+        stage[Wave].InstantiateRandomObj(parent);
     }
-
-    /// <summary>
-    /// 指定したオブジェクトをランダムなポジションへ出す関数
-    /// </summary>
-    /// <param name="spawnGameObject"></param>
-    /// <param name="background"></param>
-    private void RandomSpawnObj(GameObject spawnGameObject, Transform background)
-    {
-        int x = Random.Range(0, objSpawPos.GetLength(0));
-        int y = Random.Range(0, objSpawPos.GetLength(1));
-        var go = Instantiate(spawnGameObject, objSpawPos[x,y], Quaternion.identity) as GameObject;
-        go.transform.parent = background;
-    }
-
 
     /// <summary>
     /// インスペクターで設定した範囲、幅のマスを設定し
     /// それをオブジェクトが現れるポジションとして保存する関数
     /// </summary>
-    private void SetSpawnList()
+    /*private void SetSpawnList()
     {
         int x = Mathf.Abs((int)((lastSpawnPos.x - startSpawnPos.x) / offset.x));
         int y = Mathf.Abs((int)((lastSpawnPos.y - startSpawnPos.y) / offset.y));
@@ -206,6 +147,6 @@ public class StageManager : MonoBehaviour {
         }
         Debug.Log(objSpawPos.GetLength(0));
         Debug.Log(objSpawPos.GetLength(1));
-    }
+    }*/
 
 }
