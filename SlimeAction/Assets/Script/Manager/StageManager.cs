@@ -109,7 +109,7 @@ public class StageManager : MonoBehaviour {
 
         for (int i = 0; i < background.Length; i++)
         {
-            background[i].sprite = backgroundSprites[wave-1];
+            background[i].sprite = backgroundSprites[Wave];
         }
         //Debug.Log("チェンジ！");
         while (backgroundColor.a < 1)
