@@ -13,13 +13,11 @@ public class Player : MonoBehaviour {
 
     //ココロノカケラ
     private int mind;
-    public int Mind
-    {
-        get
-        {
+    public int Mind {
+        get {
             return mind;
         }
-        private set {}
+        private set { }
     }
 
     [SerializeField]
@@ -38,13 +36,11 @@ public class Player : MonoBehaviour {
     private int maxHp;
     [SerializeField]
     private int hp;
-    public int HP
-    {
-        get
-        {
+    public int HP {
+        get {
             return hp;
         }
-        private set{}
+        private set { }
     }
 
     private bool isDead;
@@ -70,7 +66,7 @@ public class Player : MonoBehaviour {
     private AudioSource walkAudioSource;
     [SerializeField]
     private AudioSource effectAudioSource;
-    
+
     [SerializeField]
     private AudioClip damageSe;
     [SerializeField]
@@ -107,10 +103,10 @@ public class Player : MonoBehaviour {
     //private bool isMoving;
     private float moveDirection;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start() {
         mind = 0;
-       // hp = 0;
+        // hp = 0;
         isDead = false;
         invincible = false;
         isWing = false;
@@ -119,28 +115,24 @@ public class Player : MonoBehaviour {
         UIManager.instance.SetHPUI(hp);
         walkAudioSource.Play();
     }
-	
-	// Update is called once per frame
-	void Update () {
-        if (!isDead)
-        {
+
+    // Update is called once per frame
+    void Update() {
+        if (!isDead) {
             Move();
             GoFront();
-            if (invincible)
-            {
+            if (invincible) {
                 Blink();
             }
         }
-	}
+    }
 
     /// <summary>
     /// ダメージ時の点滅関数
     /// </summary>
-    void Blink()
-    {
+    void Blink() {
         invincibleTimer += Time.deltaTime;
-        if (rendererInterval < invincibleTimer)
-        {
+        if (rendererInterval < invincibleTimer) {
             spRenderer.enabled = !spRenderer.enabled;
             invincibleTimer = 0;
         }
@@ -149,36 +141,30 @@ public class Player : MonoBehaviour {
     /// 横移動関数
     /// ポジション移動とアニメーション、音
     /// </summary>
-    void Move()
-    {
+    void Move() {
 #if UNITY_STANDALONE_WIN
         x = Input.GetAxis("Horizontal");
 #elif UNITY_ANDROID
 
         Vector3 playerPos = this.transform.position;
-        if (Input.GetMouseButton(0))
-        {
+        if (Input.GetMouseButton(0)) {
             //プレイヤーとタップの距離
             tapPosX = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
             tapDistance = tapPosX - playerPos.x;
             //Debug.Log(tapDistance);
-            if (tapDistance > width)
-            {
+            if (tapDistance > width) {
                 moveDirection = 1f;
             }
-            else if (tapDistance < -width)
-            {
+            else if (tapDistance < -width) {
                 moveDirection = -1f;
             }
-            else
-            {
+            else {
                 moveDirection = 0;
             }
             this.transform.position += CalculateMovePosition(playerPos.x, moveDirection) * Time.deltaTime;
             //Debug.Log(tapDistance);
         }
-        else
-        {
+        else {
             moveDirection = 0;
         }
         /*
@@ -196,32 +182,26 @@ public class Player : MonoBehaviour {
 #endif
 
         //this.transform.position += CalculateMovePosition(playerPos.x, x) * Time.deltaTime;
-        
-        if (moveDirection > 0)
-        {
+
+        if (moveDirection > 0) {
             anim.SetBool("Right", true);
-            anim.SetBool("Left",false);
-            if (walkAudioSource.mute)
-            {
+            anim.SetBool("Left", false);
+            if (walkAudioSource.mute) {
                 walkAudioSource.mute = false;
             }
 
         }
-        else if (moveDirection < 0)
-        {
+        else if (moveDirection < 0) {
             anim.SetBool("Left", true);
-            anim.SetBool("Right",false);
-            if (walkAudioSource.mute)
-            {
+            anim.SetBool("Right", false);
+            if (walkAudioSource.mute) {
                 walkAudioSource.mute = false;
             }
         }
-        else
-        {
+        else {
             anim.SetBool("Left", false);
             anim.SetBool("Right", false);
-            if (!walkAudioSource.mute)
-            {
+            if (!walkAudioSource.mute) {
                 walkAudioSource.mute = true;
             }
         }
@@ -234,13 +214,11 @@ public class Player : MonoBehaviour {
     /// <param name="playerPosX"></param>
     /// <param name="x"></param>
     /// <returns></returns>
-    Vector3 CalculateMovePosition(float playerPosX, float x)
-    {
-        if ((maxPosX < playerPosX && 0 < x )|| (playerPosX < minPosX && x < 0))
-        {
+    Vector3 CalculateMovePosition(float playerPosX, float x) {
+        if ((maxPosX < playerPosX && 0 < x) || (playerPosX < minPosX && x < 0)) {
             return new Vector3(0, 0, 0);
         }
-        else{
+        else {
             return new Vector3(x * wideSpeed, 0, 0);
         }
     }
@@ -249,12 +227,10 @@ public class Player : MonoBehaviour {
     /// HPを削って前にでる関数
     /// スケールも小さくし、スピードもUP
     /// </summary>
-    void GoFront()
-    {
-        if (1 < hp && (Input.GetKeyDown(KeyCode.UpArrow) || goFront))
-        {
-            this.transform.position -= new Vector3(0,playerBackY,0);
-            this.transform.localScale -= new Vector3(addScale.x, addScale.y,0);
+    void GoFront() {
+        if (1 < hp && (Input.GetKeyDown(KeyCode.UpArrow) || goFront)) {
+            this.transform.position -= new Vector3(0, playerBackY, 0);
+            this.transform.localScale -= new Vector3(addScale.x, addScale.y, 0);
             wideSpeed += addWideSpeed;
             hp--;
             UIManager.instance.SetHPUI(hp);
@@ -262,22 +238,23 @@ public class Player : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter2D(Collider2D col){
+    void OnTriggerEnter2D(Collider2D col) {
         switch (col.tag) {
             case "Mind":
                 effectAudioSource.clip = mindSe;
                 effectAudioSource.Play();
                 mind += addMind;
-                if(100 <= mind) {
+                if (100 <= mind) {
                     UIManager.instance.HumanButton.interactable = true;
-                }else if (1000 <= mind){
+                }
+                else if (1000 <= mind) {
                     mind = 999;
                 }
                 UIManager.instance.SetMindUI(mind);
                 break;
 
             case "DamageObj":
-                if (!invincible && !isWing){
+                if (!invincible && !isWing) {
                     //InvinciblePoison();
                     Invinceble();
                     effectAudioSource.clip = poisonSe;
@@ -286,17 +263,15 @@ public class Player : MonoBehaviour {
                     wideSpeed += addWideSpeed;
                     hp--;
                     UIManager.instance.SetHPUI(hp);
-                    if (hp <= 0)
-                    {
+                    if (hp <= 0) {
                         isDead = true;
                         gameManager.GameOver();
                     }
                 }
                 break;
-        
+
             case "Glue":
-                if (hp < maxHp)
-                {
+                if (hp < maxHp) {
                     effectAudioSource.clip = healingSe;
                     effectAudioSource.Play();
                     hp++;
@@ -305,7 +280,7 @@ public class Player : MonoBehaviour {
                     UIManager.instance.SetHPUI(hp);
                 }
                 break;
-      
+
             case "Obstacle":
                 OnTriggerObstacle();
                 break;
@@ -313,7 +288,7 @@ public class Player : MonoBehaviour {
             case "House":
                 OnTriggerObstacle();
                 break;
-            
+
             case "Buru":
                 effectAudioSource.clip = pickSe;
                 effectAudioSource.Play();
@@ -335,16 +310,13 @@ public class Player : MonoBehaviour {
             default:
                 break;
         }
-        if (col.tag != "Brave" && col.tag != "DamageObj")
-        {
+        if (col.tag != "Brave" && col.tag != "DamageObj") {
             Destroy(col.gameObject);
         }
     }
 
-    void OnTriggerObstacle()
-    {
-        if (!invincible)
-        {
+    void OnTriggerObstacle() {
+        if (!invincible) {
             effectAudioSource.clip = destroySe;
             effectAudioSource.Play();
             this.transform.position += new Vector3(0, playerBackY, 0);
@@ -353,33 +325,28 @@ public class Player : MonoBehaviour {
         }
     }
 
-    void Wing()
-    {
+    void Wing() {
         isWing = true;
-        anim.SetBool("Wing",isWing);
-        Invoke("ReleasedWing", isWingTime);       
+        anim.SetBool("Wing", isWing);
+        Invoke("ReleasedWing", isWingTime);
     }
 
-    void ReleasedWing()
-    {
+    void ReleasedWing() {
         isWing = false;
-        anim.SetBool("Wing", isWing);        
+        anim.SetBool("Wing", isWing);
     }
 
-    void Invinceble()
-    {
+    void Invinceble() {
         invincible = true;
-        Invoke("ReleasedInvincible",invincibleTime);
+        Invoke("ReleasedInvincible", invincibleTime);
     }
 
-    void ReleasedInvincible()
-    {
+    void ReleasedInvincible() {
         invincible = false;
         spRenderer.enabled = true;
     }
 
-    public void ClickGoFrontButton()
-    {
+    public void ClickGoFrontButton() {
         if (!goFront)
             goFront = true;
     }

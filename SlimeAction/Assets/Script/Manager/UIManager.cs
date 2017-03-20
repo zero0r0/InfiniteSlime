@@ -34,14 +34,11 @@ public class UIManager : MonoBehaviour {
     private float score = 0;
 
     private bool isPlaying;
-    public bool IsPlaying
-    {
-        get
-        {
+    public bool IsPlaying {
+        get {
             return isPlaying;
         }
-        set
-        {
+        set {
             isPlaying = value;
         }
     }
@@ -49,94 +46,76 @@ public class UIManager : MonoBehaviour {
     [SerializeField]
     private float speed = 1f;
 
-    void Awake()
-    {
+    void Awake() {
         if (instance == null)
             instance = this;
         else if (instance != this)
             Destroy(gameObject);
     }
 
-    void Start()
-    {
+    void Start() {
         isPlaying = false;
         int highScore = ScoreManager.instance.LoadScore();
         SetHighScoreUI(highScore);
     }
 
-    void Update()
-    {
-        if (isPlaying)
-        {
+    void Update() {
+        if (isPlaying) {
             score += speed * Time.deltaTime;
             SetDistanceUI((int)score);
         }
     }
-	
-    public void SetHPUI(int hp)
-    {
+
+    public void SetHPUI(int hp) {
         hpImage.sprite = numFontSprite[hp];
     }
 
-    public void SetDistanceUI(int distance)
-    {
+    public void SetDistanceUI(int distance) {
         int digit = GetNumberDigit(distance);
-        for (int i = 0; i < digit; i++)
-        {
-            distanceImage[i].sprite = numFontSprite[distance%10];
+        for (int i = 0; i < digit; i++) {
+            distanceImage[i].sprite = numFontSprite[distance % 10];
             distance /= 10;
         }
     }
 
-    public void SetHighScoreUI(int score)
-    {
+    public void SetHighScoreUI(int score) {
         int digit = GetNumberDigit(score);
-       // Debug.Log(digit);
-        for (int i = 0; i < digit; i++)
-        {
+        // Debug.Log(digit);
+        for (int i = 0; i < digit; i++) {
             scoreImage[i].sprite = numFontSprite[score % 10];
             score /= 10;
         }
     }
 
-    public void SetMindUI(int n)
-    {
-        for (int i = 0; i < mindPercentImage.Length; i++)
-        {
+    public void SetMindUI(int n) {
+        for (int i = 0; i < mindPercentImage.Length; i++) {
             mindPercentImage[i].sprite = numFontSprite[n % 10];
             n /= 10;
         }
     }
 
-    private int GetNumberDigit(int number)
-    {
+    private int GetNumberDigit(int number) {
         int digit = 0;
-        
-        for (int n = number; 0 < n; digit++)
-        {
+
+        for (int n = number; 0 < n; digit++) {
             n /= 10;
         }
 
         return digit;
     }
 
-    public void SaveHighScore()
-    {
+    public void SaveHighScore() {
         ScoreManager.instance.SaveScore((int)score);
     }
 
-    public void SetResult()
-    {
+    public void SetResult() {
         hpResult.sprite = hpImage.sprite;
 
-        for (int i = 0; i < mindResultPercent.Length; i++)
-        {
+        for (int i = 0; i < mindResultPercent.Length; i++) {
             mindResultPercent[i].sprite = mindPercentImage[i].sprite;
         }
 
-        
-        for (int i = 0; i < distanceResult.Length; i++)
-        {
+        for (int i = 0; i < distanceResult.Length; i++) {
             distanceResult[i].sprite = distanceImage[i].sprite;
         }
     }

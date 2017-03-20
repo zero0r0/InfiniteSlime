@@ -4,8 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
-    enum GameState
-    {
+    enum GameState {
         READY,
         PLAY,
         GAMEOVER,
@@ -26,7 +25,7 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField]
     private StageManager stageManager;
-    
+
     [SerializeField]
     private AudioClip selectSe;
     [SerializeField]
@@ -38,10 +37,9 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField]
     private float particleTime = 1f;
-   
 
-    void Awake()
-    {
+
+    void Awake() {
         player.enabled = false;
         brave.enabled = false;
         background[0].enabled = false;
@@ -49,16 +47,15 @@ public class GameManager : MonoBehaviour {
         isMoveScene = false;
     }
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start() {
         nowState = GameState.READY;
         gameStart.SetActive(true);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        switch (nowState)
-        {
+    }
+
+    // Update is called once per frame
+    void Update() {
+        switch (nowState) {
             case GameState.READY:
                 if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
                     GameStart();
@@ -66,38 +63,33 @@ public class GameManager : MonoBehaviour {
                 break;
 
             case GameState.PLAY:
-                if (player.Mind >= 100 && (Input.GetKeyDown(KeyCode.Space) || isHumanized))
-                {
+                if (player.Mind >= 100 && (Input.GetKeyDown(KeyCode.Space) || isHumanized)) {
                     GameClear();
                 }
-             
+
                 break;
-            
+
             case GameState.GAMEOVER:
-                if (Input.GetMouseButtonUp(0) || (Input.GetKeyDown(KeyCode.Space)))
-                {
+                if (Input.GetMouseButtonUp(0) || (Input.GetKeyDown(KeyCode.Space))) {
                     SceneManager.LoadScene(0);
                 }
-                    
+
                 break;
             case GameState.GAMECLEAR:
-                if (isMoveScene && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)))
-                {
+                if (isMoveScene && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))) {
                     SceneManager.LoadScene(0);
                 }
                 break;
-                
+
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
             Application.Quit();
         }
 
-	}   
+    }
 
-    private void GameStart()
-    {
+    private void GameStart() {
         SystemSetBool(true);
         gameStart.SetActive(false);
         SoundManager.instance.IsPlaying = true;
@@ -106,18 +98,16 @@ public class GameManager : MonoBehaviour {
         nowState = GameState.PLAY;
     }
 
-    public void GameOver()
-    {
+    public void GameOver() {
         SystemSetBool(false);
         nowState = GameState.GAMEOVER;
         SoundManager.instance.IsPlaying = false;
         SoundManager.instance.StopBGM();
         SoundManager.instance.SoundSystemSE(gameOverBGM);
-        EndingManager.instance.JudgeEnding(true, 0,player.HP);
+        EndingManager.instance.JudgeEnding(true, 0, player.HP);
     }
 
-    private void GameClear()
-    {
+    private void GameClear() {
         SystemSetBool(false);
         stageManager.IsPlaying = false;
         UIManager.instance.SaveHighScore();
@@ -132,16 +122,15 @@ public class GameManager : MonoBehaviour {
     /// エンディングの演出
     /// </summary>
     /// <returns></returns>
-    IEnumerator ProductionGameClear()
-    {
+    IEnumerator ProductionGameClear() {
         player.evolution.Play();
         yield return new WaitForSeconds(particleTime);
-        yield return StartCoroutine(EndingManager.instance.FlashImage(Color.white,0,1));
+        yield return StartCoroutine(EndingManager.instance.FlashImage(Color.white, 0, 1));
         player.evolution.Stop();
         EndingManager.instance.JudgeEnding(false, player.Mind);
         UIManager.instance.SetResult();
         player.gameObject.SetActive(false);
-        yield return StartCoroutine(EndingManager.instance.FlashImage(Color.white,1,0));        
+        yield return StartCoroutine(EndingManager.instance.FlashImage(Color.white, 1, 0));
         isMoveScene = true;
     }
 
@@ -150,8 +139,7 @@ public class GameManager : MonoBehaviour {
     /// 各オブジェクトの動作を止めたりスタートさせたりする関数
     /// </summary>
     /// <param name="isPlay"></param>
-    private void SystemSetBool(bool isPlay)
-    {
+    private void SystemSetBool(bool isPlay) {
         player.enabled = isPlay;
         brave.enabled = isPlay;
         background[0].enabled = isPlay;
@@ -160,8 +148,7 @@ public class GameManager : MonoBehaviour {
         UIManager.instance.IsPlaying = isPlay;
     }
 
-    public void SetHumanized(bool setHumanized)
-    {
+    public void SetHumanized(bool setHumanized) {
         isHumanized = setHumanized;
     }
 
