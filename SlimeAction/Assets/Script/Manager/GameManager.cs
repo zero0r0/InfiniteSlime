@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour {
                 break;
 
             case GameState.GAMEOVER:
-                if (Input.GetMouseButtonUp(0) || (Input.GetKeyDown(KeyCode.Space))) {
+                if (Input.GetMouseButtonDown(0) || (Input.GetKeyDown(KeyCode.Space))) {
                     SceneManager.LoadScene(0);
                 }
 

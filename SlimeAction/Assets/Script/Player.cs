@@ -141,18 +141,10 @@ public class Player : MonoBehaviour {
     /// 横移動関数
     /// ポジション移動とアニメーション、音
     /// </summary>
-<<<<<<< HEAD
-    void Move()
-    {
-//#if UNITY_STANDALONE_WIN
-//        x = Input.GetAxis("Horizontal");
-//#elif UNITY_ANDROID
-=======
     void Move() {
 #if UNITY_STANDALONE_WIN
         x = Input.GetAxis("Horizontal");
 #elif UNITY_ANDROID
->>>>>>> Develop
 
         Vector3 playerPos = this.transform.position;
         if (Input.GetMouseButton(0)) {
@@ -187,7 +179,7 @@ public class Player : MonoBehaviour {
             }
         }*/
 
-//#endif
+#endif
 
         //this.transform.position += CalculateMovePosition(playerPos.x, x) * Time.deltaTime;
 
